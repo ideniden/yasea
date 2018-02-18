@@ -54,13 +54,17 @@ public class SrsCameraView extends GLSurfaceView implements GLSurfaceView.Render
     private ConcurrentLinkedQueue<IntBuffer> mGLIntBufferCache = new ConcurrentLinkedQueue<>();
     private PreviewCallback mPrevCb;
 
-    public SrsCameraView(Context context) {
-        this(context, null);
-    }
-
     public SrsCameraView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
+    }
 
+    public SrsCameraView(Context context) {
+        super(context);
+        init();
+    }
+
+    private void init(){
         setEGLContextClientVersion(2);
         setRenderer(this);
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
@@ -198,9 +202,9 @@ public class SrsCameraView extends GLSurfaceView implements GLSurfaceView.Render
         Camera.getCameraInfo(mCamId, info);
         if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                mPreviewRotation = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ? 270 : 90;
+                mPreviewRotation = Build.VERSION.SDK_INT >= 24 ? 270 : 90;
             } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                mPreviewRotation = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ? 180 : 0;
+                mPreviewRotation = Build.VERSION.SDK_INT >= 24 ? 180 : 0;
             }
         } else if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
